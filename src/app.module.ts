@@ -25,7 +25,7 @@ import { CommentModule } from './comment/comment.module';
       username: process.env.DATABASE_USER,
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE,
-      dropSchema: true,
+      dropSchema: false,
       autoLoadEntities: true,
       synchronize: true,
     }),
