@@ -1,14 +1,23 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, BadRequestException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, BadRequestException, Req } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { validate } from 'class-validator';
+import { ApiHeader, ApiResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('user')
+@ApiHeader({
+  name: 'application/json',
+  description: 'application/json header type',
+})
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
-
+  
   @Post()
+  @ApiResponse({ status: 201, description: 'The record has been successfully created.'})
+  @ApiResponse({ status: 403, description: 'Forbidden.'})
+  @ApiResponse({ status: 400, description: 'Bad Request.'})
   async create(@Body() createUserDto: CreateUserDto) {
     createUserDto=this.get_dto(createUserDto)
     const validation = await validate(createUserDto);
@@ -25,7 +34,8 @@ export class UserController {
   }
 
   @Get()
-  findAll() {
+  findAll(@Req() request: object) {
+    console.log(request);
     return this.userService.findAll();
   }
 

@@ -23,6 +23,7 @@ export class UserEntity {
         type: "varchar",
         name: "user_email",
         nullable: false,
+        unique:true,
         comment: "user email"
     })
     user_email: string;
@@ -47,7 +48,7 @@ export class UserEntity {
         type: "float",
         name: "blind_discapacity_percentage",
         nullable: false,
-        comment: "user's phone"
+        comment: "User's blind discapacity percentage"
     })
     blind_discapacity_percentage: number;
     
