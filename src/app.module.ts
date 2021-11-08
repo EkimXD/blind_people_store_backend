@@ -29,7 +29,7 @@ import { CommentModule } from './comment/comment.module';
       autoLoadEntities: true,
       synchronize: true,
       logging: false,
-      url: process.env.URI,
+      url: process.env.DATABASE_URL,
       ssl:true,
       extra: {
         ssl: {
