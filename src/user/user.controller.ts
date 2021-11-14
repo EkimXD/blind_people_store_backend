@@ -91,7 +91,6 @@ export class UserController {
   @UseGuards(AuthGuard('local'))
   @Post('login')
   async login(@Request() req, @Body() loginUserDTO: LoginUserDTO) {
-    console.log(req.user)
     let user=req.user;
     const payload = { username: user.user_name , sub: user.user_id };
     user.access_token=this.jwtService.sign(payload)
