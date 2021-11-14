@@ -5,13 +5,24 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { validate } from 'class-validator';
 import { ApiHeader, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
+import { AuthService } from 'src/auth/auth.service';
+import { JwtService } from '@nestjs/jwt';
+import { LoginUserDTO } from './dto/login-user.dto';
 
 @ApiTags('user')
 @ApiHeader({
-  name: 'application/json',
+  name: 'Content-Type',
+  schema:{
+    type: 'string', 
+    default: "application/json"
+  }
 })
 @ApiHeader({
   name: 'x-api-key',
+  schema:{
+    type: 'string', 
+    default: "420f77de-2cea-4e13-841a-b43ca729a7a9"
+  }
 })
 @ApiResponse({ status: 401, description: 'Unauthorized, please verify your headers or loggin up.' })
 @ApiResponse({ status: 403, description: 'Forbidden.' })
@@ -19,7 +30,10 @@ import { AuthGuard } from '@nestjs/passport';
 @UseGuards(AuthGuard('api-key'))
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService) { }
+  constructor(private readonly userService: UserService,
+    private jwtService: JwtService
+
+    ) { }
 
   @Post()
   @ApiResponse({ status: 201, description: 'The record has been successfully created.' })
@@ -76,8 +90,12 @@ export class UserController {
 
   @UseGuards(AuthGuard('local'))
   @Post('login')
-  async login(@Request() req) {
-    return req.user;
+  async login(@Request() req, @Body() loginUserDTO: LoginUserDTO) {
+    console.log(req.user)
+    let user=req.user;
+    const payload = { username: user.user_name , sub: user.user_id };
+    user.access_token=this.jwtService.sign(payload)
+    return user
   }
 
   private get_dto(createUserDto: CreateUserDto): CreateUserDto {
