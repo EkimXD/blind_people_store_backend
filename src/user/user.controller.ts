@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, BadRequestException, Req, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Request, Body, Patch, Param, Delete, BadRequestException, Req, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -72,6 +72,12 @@ export class UserController {
   @ApiResponse({ status: 200, description: 'Succesfull deleted.' })
   remove(@Param('id') id: string) {
     return this.userService.remove(+id);
+  }
+
+  @UseGuards(AuthGuard('local'))
+  @Post('login')
+  async login(@Request() req) {
+    return req.user;
   }
 
   private get_dto(createUserDto: CreateUserDto): CreateUserDto {
