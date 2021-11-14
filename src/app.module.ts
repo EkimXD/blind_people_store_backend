@@ -11,6 +11,7 @@ import { ServiceCategoryModule } from './service-category/service-category.modul
 import { CityModule } from './city/city.module';
 import { DemandServiceModule } from './demand-service/demand-service.module';
 import { CommentModule } from './comment/comment.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -45,6 +46,7 @@ import { CommentModule } from './comment/comment.module';
     CityModule,
     DemandServiceModule,
     CommentModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
