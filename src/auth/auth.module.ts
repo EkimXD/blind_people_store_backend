@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
 import { HeaderApiKeyStrategy } from './auth-header-api-key.strategy';
 import { ConfigModule } from '@nestjs/config';
@@ -7,7 +7,7 @@ import { LocalStrategy } from './local.strategy';
 import { AuthService } from './auth.service';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './constants';
-import { LoginService } from './login.service';
+import { JwtStrategy } from './jwt.strategy';
 
 @Module({
   imports: [
@@ -15,9 +15,9 @@ import { LoginService } from './login.service';
         secret: jwtConstants.secret,
         signOptions: { expiresIn: '2h' },
       }),  
-    PassportModule, ConfigModule, UserModule
+    PassportModule, ConfigModule, forwardRef(() => UserModule)
 ],
-  providers: [HeaderApiKeyStrategy, LocalStrategy, AuthService, LoginService],
-  exports:[AuthService,LoginService]
+  providers: [HeaderApiKeyStrategy, LocalStrategy, AuthService, JwtStrategy],
+  exports:[AuthService]
 })
 export class AuthModule {}

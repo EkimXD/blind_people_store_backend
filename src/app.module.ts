@@ -12,6 +12,7 @@ import { CityModule } from './city/city.module';
 import { DemandServiceModule } from './demand-service/demand-service.module';
 import { CommentModule } from './comment/comment.module';
 import { AuthModule } from './auth/auth.module';
+import { AuthService } from './auth/auth.service';
 
 @Module({
   imports: [

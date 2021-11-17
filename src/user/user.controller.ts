@@ -1,13 +1,14 @@
-import { Controller, Get, Post, Request, Body, Patch, Param, Delete, BadRequestException, Req, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Request, Body, Patch, Param, Delete, BadRequestException, Req, UseGuards, forwardRef, Inject } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { validate } from 'class-validator';
 import { ApiHeader, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
-import { AuthService } from 'src/auth/auth.service';
-import { JwtService } from '@nestjs/jwt';
+// import { JwtService } from '@nestjs/jwt';
 import { LoginUserDTO } from './dto/login-user.dto';
+import { LocalAuthGuard } from 'src/auth/local-auth.guard';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @ApiTags('user')
 @ApiHeader({
@@ -30,8 +31,7 @@ import { LoginUserDTO } from './dto/login-user.dto';
 @UseGuards(AuthGuard('api-key'))
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService,
-    private jwtService: JwtService
+  constructor(private readonly userService: UserService
 
     ) { }
 
@@ -82,19 +82,12 @@ export class UserController {
     }
   }
   
-  @Delete(':id')
+  @ApiHeader({name: 'Authorization'})
   @ApiResponse({ status: 200, description: 'Succesfull deleted.' })
+  @UseGuards(JwtAuthGuard)
+  @Delete(':id')
   remove(@Param('id') id: string) {
     return this.userService.remove(+id);
-  }
-
-  @UseGuards(AuthGuard('local'))
-  @Post('login')
-  async login(@Request() req, @Body() loginUserDTO: LoginUserDTO) {
-    let user=req.user;
-    const payload = { username: user.user_name , sub: user.user_id };
-    user.access_token=this.jwtService.sign(payload)
-    return user
   }
 
   private get_dto(createUserDto: CreateUserDto): CreateUserDto {
