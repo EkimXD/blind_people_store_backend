@@ -5,9 +5,6 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { validate } from 'class-validator';
 import { ApiHeader, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
-// import { JwtService } from '@nestjs/jwt';
-import { LoginUserDTO } from './dto/login-user.dto';
-import { LocalAuthGuard } from 'src/auth/local-auth.guard';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @ApiTags('user')
@@ -55,7 +52,6 @@ export class UserController {
   @Get()
   @ApiResponse({ status: 200, description: 'Succesfull.' })
   findAll(@Req() request: object) {
-    console.log(request);
     return this.userService.findAll();
   }
   
@@ -74,7 +70,6 @@ export class UserController {
       return this.userService.update(+id, updateUserDto);
     } else {
       let error = new Array();
-      console.log(typeof (error))
       validation.forEach((err) => {
         error.push(err.constraints)
       })

@@ -1,8 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty, IsString, Matches } from "class-validator";
-
+import { RoleEntity } from 'src/role/entities/role.entity';
 
 export class CreateUserDto {
+    
     @ApiProperty(
         {
             description: 'User name',
@@ -54,6 +55,8 @@ export class CreateUserDto {
     @IsNotEmpty()
     blind_discapacity_percentage?: number = 0.0;
 
+    @IsNotEmpty()
+    role?:RoleEntity=RoleEntity.getDefaultRole();
 
 }
 

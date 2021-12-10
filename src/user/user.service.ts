@@ -41,7 +41,7 @@ export class UserService {
   }
 
   findOne(id: number) {
-    return this._repositoryUser.findOne(id);
+    return this._repositoryUser.findOne(id, {relations:['role']});
   }
 
   findByEmail(user_email: string) {
@@ -49,7 +49,8 @@ export class UserService {
       {
         where: {
           user_email: user_email
-        }
+        },
+        relations:['role']
       }
     );
   }

@@ -6,6 +6,9 @@ import { UserEntity } from './entities/user.entity';
 import { AuthService } from 'src/auth/auth.service';
 import { JwtService } from '@nestjs/jwt';
 import { JwtModule } from '@nestjs/jwt';
+import { RoleEntity } from 'src/role/entities/role.entity';
+import { ServiceEntity } from 'src/service/entities/service.entity';
+import { RoleModule } from 'src/role/role.module';
 
 @Module({
   imports: [
@@ -13,10 +16,12 @@ import { JwtModule } from '@nestjs/jwt';
     TypeOrmModule.forFeature(
       [
         UserEntity,
+        RoleEntity,
+        ServiceEntity
       ],
       'default',
     ),
-    
+
     // JwtModule.register({
     //   secret: "secret",
     //   signOptions: { expiresIn: '2h' },

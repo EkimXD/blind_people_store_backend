@@ -1,4 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { RoleEntity } from "src/role/entities/role.entity";
+import { ServiceEntity } from "src/service/entities/service.entity";
+import { Column, Entity, JoinTable, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity("USER")
 export class UserEntity {
@@ -52,4 +54,17 @@ export class UserEntity {
     })
     blind_discapacity_percentage: number;
     
+    @ManyToOne(type => RoleEntity, role => role.role_id) 
+    role: RoleEntity;
+
+    @OneToMany(type => ServiceEntity, service => service.service_id) 
+    @JoinTable()
+    service: ServiceEntity[];
+
+    public static getUserFake(id:number):UserEntity{
+        let user: UserEntity = new UserEntity();
+        user.user_id=id
+        return user;
+    }
+
 }
