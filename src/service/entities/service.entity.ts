@@ -1,3 +1,5 @@
+import { CityEntity } from "src/city/entities/city.entity";
+import { ServiceCategoryEntity } from "src/service-category/entities/service-category.entity";
 import { UserEntity } from "src/user/entities/user.entity";
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
@@ -48,5 +50,15 @@ export class ServiceEntity {
         user => user.user_id,
         { nullable: false })
     user: UserEntity;
+
+    @ManyToOne(type => CityEntity,
+        city => city.service,
+        { nullable: false }) // TODO change to false
+    city: CityEntity;
+
+    @ManyToOne(type => ServiceCategoryEntity,
+        sc => sc.sc_id,
+        { nullable: true }) // TODO change to false
+    sc: ServiceCategoryEntity;
 
 }

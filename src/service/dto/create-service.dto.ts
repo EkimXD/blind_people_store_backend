@@ -1,5 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsDataURI, IsEmail, IsNotEmpty, IsString, Matches } from "class-validator";
+import { CityEntity } from 'src/city/entities/city.entity';
+import { ServiceCategoryEntity } from 'src/service-category/entities/service-category.entity';
 import { UserEntity } from 'src/user/entities/user.entity';
 import { ServiceEntity } from '../entities/service.entity';
 
@@ -53,8 +55,28 @@ export class CreateServiceDto {
     @IsNotEmpty()
     user: any;
 
+    @ApiProperty(
+        {
+            description: 'Service city id',
+            default: 1,
+        }
+    )
+    @IsNotEmpty()
+    city: any;
+
+    @ApiProperty(
+        {
+            description: 'Service category id',
+            default: 1,
+        }
+    )
+    @IsNotEmpty()
+    sc: any;
+
     public static getDTO(serviceDTO:CreateServiceDto):CreateServiceDto{
-        serviceDTO.user=UserEntity.getUserFake(+serviceDTO.user)
+        serviceDTO.user=UserEntity.getUserFake(+serviceDTO.user);
+        serviceDTO.city=CityEntity.getCityFake(+serviceDTO.city);
+        serviceDTO.sc=ServiceCategoryEntity.getSCFake(+serviceDTO.sc);
         return serviceDTO
     }
 }

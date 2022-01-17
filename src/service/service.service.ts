@@ -40,7 +40,7 @@ export class ServiceService {
   }
 
   findOne(id: number) {
-    return this._repositoryService.findOne(id, {relations:['user']});
+    return this._repositoryService.findOne(id, {relations:['user', 'sc', 'city']});
   }
 
   update(id: number, updateUserDto: UpdateServiceDto) {
