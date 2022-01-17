@@ -53,7 +53,7 @@ export class ServiceEntity {
 
     @ManyToOne(type => CityEntity,
         city => city.service,
-        { nullable: false }) // TODO change to false
+        { nullable: true }) // TODO change to false
     city: CityEntity;
 
     @ManyToOne(type => ServiceCategoryEntity,

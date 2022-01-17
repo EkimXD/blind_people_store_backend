@@ -3,7 +3,6 @@ import { IsDataURI, IsEmail, IsNotEmpty, IsString, Matches } from "class-validat
 import { CityEntity } from 'src/city/entities/city.entity';
 import { ServiceCategoryEntity } from 'src/service-category/entities/service-category.entity';
 import { UserEntity } from 'src/user/entities/user.entity';
-import { ServiceEntity } from '../entities/service.entity';
 
 export class CreateServiceDto {
 
