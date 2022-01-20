@@ -29,8 +29,19 @@ export class ServiceService {
       );
   }
 
-  findAll(where: any = {}, relations: any = [], skip: number = 0, take: number = 10, order: any = { service_id: 'DESC' }): Promise<ServiceEntity[]> {
-    return this._repositoryService.find({
+  findAll(props: Object)
+    // : Promise<ServiceEntity[]> {
+    : Promise<any> {
+    let where: object = props["where"] || {};
+    // where=JSON.parse(JSON.stringify(where));
+    // where={"service_id":2};
+    // const where: object = {};
+    const relations: any = props["relations"]||[];
+    const skip: number = props["skip"] || 0;
+    const take: number = props["take"] || 10;
+    let order: object = { service_id: props["order"]||'DESC' };
+    order["service_id"] = order["service_id"].toUpperCase();
+    return this._repositoryService.findAndCount({
       where: where,
       skip: skip,
       take: take,
@@ -40,7 +51,7 @@ export class ServiceService {
   }
 
   findOne(id: number) {
-    return this._repositoryService.findOne(id, {relations:['user', 'sc', 'city']});
+    return this._repositoryService.findOne(id, { relations: ['user', 'sc', 'city'] });
   }
 
   update(id: number, updateUserDto: UpdateServiceDto) {

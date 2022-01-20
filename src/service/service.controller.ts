@@ -1,24 +1,24 @@
-import { UseGuards, Controller, Get, Post, Body, Patch, Param, Delete, BadRequestException, Req } from '@nestjs/common';
+import { UseGuards, Controller, Get, Post, Body, Patch, Param, Delete, BadRequestException, Req, Res, Query } from '@nestjs/common';
 import { ServiceService } from './service.service';
 import { CreateServiceDto } from './dto/create-service.dto';
 import { UpdateServiceDto } from './dto/update-service.dto';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiHeader, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiHeader, ApiResponse, ApiTags, ApiQuery } from '@nestjs/swagger';
 import { validate } from 'class-validator';
-
+import { Response } from 'express';
 
 @ApiTags('service')
 @ApiHeader({
   name: 'Content-Type',
-  schema:{
-    type: 'string', 
+  schema: {
+    type: 'string',
     default: "application/json"
   }
 })
 @ApiHeader({
   name: 'x-api-key',
-  schema:{
-    type: 'string', 
+  schema: {
+    type: 'string',
     default: "420f77de-2cea-4e13-841a-b43ca729a7a9"
   }
 })
@@ -28,7 +28,7 @@ import { validate } from 'class-validator';
 @UseGuards(AuthGuard('api-key'))
 @Controller('service')
 export class ServiceController {
-  constructor(private readonly serviceService: ServiceService) {}
+  constructor(private readonly serviceService: ServiceService) { }
 
   @Post()
   @ApiResponse({ status: 201, description: 'The record has been successfully created.' })
@@ -48,8 +48,35 @@ export class ServiceController {
 
   @Get()
   @ApiResponse({ status: 200, description: 'Succesfull.' })
-  findAll(@Req() request: object) {
-    return this.serviceService.findAll();
+  @ApiQuery({ name: 'skip', required: false, })
+  @ApiQuery({ name: 'take', required: false, })
+  @ApiQuery({ name: 'order', required: false, })
+  findAll(
+    @Req() request: object,
+    @Res() response: Response
+  ) {
+    this.serviceService.findAll(request["query"])
+      .then(
+        ([result, count]) => {
+          console.log("count", count);
+          response
+            .setHeader("X-Total-Count", count)
+            .send(result);
+        }
+      )
+      .catch(
+        err => {
+          console.log(err);
+          response
+            .status(
+              500)
+              .send(
+              {
+                error: err
+              }
+            );
+        }
+      )
   }
 
   @ApiResponse({ status: 200, description: 'Succesfull updated.' })
