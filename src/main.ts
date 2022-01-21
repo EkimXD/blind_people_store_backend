@@ -12,6 +12,10 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
+  app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Headers', '*');
+    next();
+  });
   await app.listen(process.env.PORT || 3000);
 }
 bootstrap();
