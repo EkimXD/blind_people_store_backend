@@ -51,6 +51,11 @@ export class ServiceController {
   @ApiQuery({ name: 'skip', required: false, })
   @ApiQuery({ name: 'take', required: false, })
   @ApiQuery({ name: 'order', required: false, })
+  @ApiQuery({ name: 'relations', required: false, })
+  @ApiQuery({ name: 'service_id', required: false, })
+  @ApiQuery({ name: 'service_name', required: false, })
+  @ApiQuery({ name: 'service_price', required: false, })
+  @ApiQuery({ name: 'city', required: false, })
   findAll(
     @Req() request: object,
     // @Res() response: Response
