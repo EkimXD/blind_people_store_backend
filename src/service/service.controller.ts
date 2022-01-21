@@ -53,30 +53,32 @@ export class ServiceController {
   @ApiQuery({ name: 'order', required: false, })
   findAll(
     @Req() request: object,
-    @Res() response: Response
+    // @Res() response: Response
   ) {
-    this.serviceService.findAll(request["query"])
-      .then(
-        ([result, count]) => {
-          console.log("count", count);
-          response
-            .setHeader("X-Total-Count", count)
-            .send(result);
-        }
-      )
-      .catch(
-        err => {
-          console.log(err);
-          response
-            .status(
-              500)
-              .send(
-              {
-                error: err
-              }
-            );
-        }
-      )
+    return new Promise(
+      (resolve, reject) => {
+        this.serviceService.findAll(request["query"])
+          .then(
+            ([result, count]) => {
+              resolve(
+                {
+                  result,
+                  count: count
+                }
+              )
+            }
+          )
+          .catch(
+            err => {
+              reject(
+                {
+                  error: err
+                }
+              )
+            }
+          );
+      }
+    )
   }
 
   @ApiResponse({ status: 200, description: 'Succesfull updated.' })
