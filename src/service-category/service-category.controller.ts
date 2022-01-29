@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, BadReques
 import { ServiceCategoryService } from './service-category.service';
 import { CreateServiceCategoryDto } from './dto/create-service-category.dto';
 import { UpdateServiceCategoryDto } from './dto/update-service-category.dto';
-import { ApiHeader, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiHeader, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { validate } from 'class-validator';
 
@@ -47,8 +47,39 @@ export class ServiceCategoryController {
 
   @Get()
   @ApiResponse({ status: 200, description: 'Succesfull.' })
-  findAll(@Req() request: object) {
-    return this.serviceCategoryService.findAll();
+  @ApiQuery({ name: 'skip', required: false, })
+  @ApiQuery({ name: 'take', required: false, })
+  @ApiQuery({ name: 'order', required: false, })
+  @ApiQuery({ name: 'relations', required: false, })
+  @ApiQuery({ name: 'sc_name', required: false, })
+  findAll(
+    @Req() request: object,
+    // @Res() response: Response
+  ) {
+    return new Promise(
+      (resolve, reject) => {
+        this.serviceCategoryService.findAll(request["query"])
+          .then(
+            ([result, count]) => {
+              resolve(
+                {
+                  result,
+                  count: count
+                }
+              )
+            }
+          )
+          .catch(
+            err => {
+              reject(
+                {
+                  error: err
+                }
+              )
+            }
+          );
+      }
+    )
   }
 
   @Get(':id')

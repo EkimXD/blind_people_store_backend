@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, BadRequestException, Req } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiHeader, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiHeader, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { validate } from 'class-validator';
 import { CityService } from './city.service';
 import { CreateCityDto } from './dto/create-city.dto';
@@ -48,8 +48,42 @@ export class CityController {
 
   @Get()
   @ApiResponse({ status: 200, description: 'Succesfull.' })
+  @ApiQuery({ name: 'order', required: false, })
+  @ApiQuery({ name: 'relations', required: false, })
+  @ApiQuery({ name: 'state', required: false, })
+  @ApiQuery({ name: 'city', required: false, })
   findAll(@Req() request: object) {
-    return this.cityService.findAll();
+    return new Promise(
+      (resolve, reject) => {
+        this.cityService.findAll(request["query"])
+          .then(
+            ([result, count]) => {
+              this.cityService.getStates()
+              .then(
+                states=> {
+                  resolve(
+                    {
+                      result,
+                      count: count,
+                      states:states
+                    }
+                  )
+                }
+              )
+              
+            }
+          )
+          .catch(
+            err => {
+              reject(
+                {
+                  error: err
+                }
+              )
+            }
+          );
+      }
+    )
   }
 
   @Get(':id')
@@ -57,6 +91,13 @@ export class CityController {
   findOne(@Param('id') id: string) {
     return this.cityService.findOne(+id);
   }
+
+  // @Get('states')
+  // @ApiResponse({ status: 200, description: 'Succesfull.' })
+  // findStates() {
+  //   return "dobleok"
+  //   // return this.cityService.getStates();
+  // }
 
   @Patch(':id')
   @ApiResponse({ status: 200, description: 'Succesfull.' })

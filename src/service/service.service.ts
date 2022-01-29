@@ -33,7 +33,9 @@ export class ServiceService {
     : Promise<any> {
     let where: object = this.getWhere(props);
     let relations: any = props["relations"] || [];
-    relations = typeof relations === 'string' ? relations.split(',') : relations;
+    relations = typeof relations === 'string' ?
+      relations.split(',') :
+      relations;
     const skip: number = props["skip"] || 0;
     const take: number = props["take"] || 10;
     let order: object = { service_id: props["order"] || 'DESC' };

@@ -29,6 +29,14 @@ export class ServiceCategoryEntity {
     })
     sc_description: string;
 
+    @Column({
+        type: "varchar",
+        name: "sc_image",
+        nullable: true,
+        comment: "service description"
+    })
+    sc_image: string;
+
     @OneToMany(type => ServiceEntity,
         service => service.sc) 
     service: ServiceEntity[];

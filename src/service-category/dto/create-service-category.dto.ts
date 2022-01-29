@@ -24,4 +24,5 @@ export class CreateServiceCategoryDto {
     @IsString()
     sc_description: string;
 
+    sc_image:string;
 }

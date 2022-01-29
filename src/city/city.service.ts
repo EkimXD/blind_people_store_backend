@@ -3,7 +3,7 @@ import { CreateCityDto } from './dto/create-city.dto';
 import { UpdateCityDto } from './dto/update-city.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CityEntity } from './entities/city.entity';
-import { Repository } from 'typeorm';
+import { Repository, ILike } from 'typeorm';
 
 @Injectable()
 export class CityService {
@@ -30,17 +30,17 @@ export class CityService {
       );
   }
 
-  findAll(
-    where: any = {},
-    relations: any = [],
-    skip: number = 0,
-    take: number = 10,
-    order: any = { place_id: 'DESC' }
-  ): Promise<CityEntity[]> {
-    return this._repositoryCity.find({
+  findAll(props: Object)
+    : Promise<any> {
+    let where: object = this.getWhere(props);
+    let relations: any = props["relations"] || [];
+    relations = typeof relations === 'string' ?
+      relations.split(',') :
+      relations;
+    let order: object = { place_id: props["order"] || 'DESC' };
+    order["place_id"] = order["place_id"].toUpperCase();
+    return this._repositoryCity.findAndCount({
       where: where,
-      skip: skip,
-      take: take,
       order: order,
       relations
     });
@@ -56,5 +56,32 @@ export class CityService {
 
   remove(id: number) {
     return this._repositoryCity.delete(id);
+  }
+
+  getStates() {
+    return new Promise(
+      (resolve, reject) => {
+        this._repositoryCity.find(
+          {
+            select: ["state", "city"]
+          }
+        )
+          .then(
+            states => {
+              resolve([...new Set(states.map(item => item.state))]);
+            }
+          )
+          .catch(
+            err => { reject(err) }
+          )
+      }
+    )
+  }
+
+  getWhere(props: Object): Object {
+    let where = [];
+    props["state"] ? where.push({ state: ILike(`%${props["state"]}%`) }) : null;
+    props["city"] ? where.push({ city: ILike(`%${props["city"]}%`) }) : null;
+    return where;
   }
 }
