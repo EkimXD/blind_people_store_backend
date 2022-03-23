@@ -62,11 +62,13 @@ export class ServiceService {
   }
 
   getWhere(props: Object): Object {
-    let where = [];
-    props["service_id"] ? where.push({ service_id: +props["service_id"] }) : null;
-    props["service_name"] ? where.push({ service_name: ILike(`%${props["service_name"]}%`) }) : null;
-    props["service_price"] ? where.push({ service_price: ILike(`%${props["service_price"]}%`) }) : null;
-    props["service_description"] ? where.push({ service_description: ILike(`%${props["service_description"]}%`) }) : null;
+    let where = {};
+    props["service_id"] ? where["service_id"]= +props["service_id"]  : null;
+    props["service_name"] ? where["service_name"]= ILike(`%${props["service_name"]}%`)  : null;
+    props["service_price"] ? where["service_price"]=ILike(`%${props["service_price"]}%`)  : null;
+    props["service_description"] ? where["service_description"]= ILike(`%${props["service_description"]}%`) : null;
+    props["category_name"] ? where["sc"]= {"sc_name":props["category_name"]} : null;
+    props["city_name"] ? where["city"]= {"city":props["city_name"]} : null;
     return where;
   }
 }
