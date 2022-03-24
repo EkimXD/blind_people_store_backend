@@ -3,7 +3,7 @@ import { CreateServiceDto } from './dto/create-service.dto';
 import { UpdateServiceDto } from './dto/update-service.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ServiceEntity } from './entities/service.entity';
-import { Repository, ILike } from 'typeorm';
+import { Repository, ILike, MoreThanOrEqual, LessThanOrEqual } from 'typeorm';
 
 @Injectable()
 export class ServiceService {
@@ -65,7 +65,8 @@ export class ServiceService {
     let where = {};
     props["service_id"] ? where["service_id"]= +props["service_id"]  : null;
     props["service_name"] ? where["service_name"]= ILike(`%${props["service_name"]}%`)  : null;
-    props["service_price"] ? where["service_price"]=ILike(`%${props["service_price"]}%`)  : null;
+    props["price_min"] ? where["service_price"]=MoreThanOrEqual(+props["price_min"])  : null;
+    props["price_max"] ? where["service_price"]=LessThanOrEqual(+props["price_max"])  : null;
     props["service_description"] ? where["service_description"]= ILike(`%${props["service_description"]}%`) : null;
     props["category_name"] ? where["sc"]= {"sc_name":props["category_name"]} : null;
     props["city_name"] ? where["city"]= {"city":props["city_name"]} : null;

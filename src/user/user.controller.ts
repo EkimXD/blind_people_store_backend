@@ -1,6 +1,7 @@
 import { Controller, Get, Post, Request, Body, Patch, Param, Delete, BadRequestException, Req, UseGuards, forwardRef, Inject } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserPassDto } from './dto/update-user-pass.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { validate } from 'class-validator';
 import { ApiHeader, ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -63,8 +64,23 @@ export class UserController {
   
   @Patch(':id')
   @ApiResponse({ status: 200, description: 'Succesfull updated.' })
-  async update(@Param('id') id: string, @Body() updateUserDto: CreateUserDto) {
-    updateUserDto = this.get_dto(updateUserDto)
+  async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+    updateUserDto = this.get_dto_up(updateUserDto)
+    const validation = await validate(updateUserDto);
+    if (validation.length == 0) {
+      return this.userService.update(+id, updateUserDto);
+    } else {
+      let error = new Array();
+      validation.forEach((err) => {
+        error.push(err.constraints)
+      })
+      throw new BadRequestException(error);
+    }
+  }
+
+  @Patch('pass/:id')
+  @ApiResponse({ status: 200, description: 'Succesfull updated.' })
+  async updatePass(@Param('id') id: string, @Body() updateUserDto: UpdateUserPassDto) {
     const validation = await validate(updateUserDto);
     if (validation.length == 0) {
       return this.userService.update(+id, updateUserDto);
@@ -90,6 +106,17 @@ export class UserController {
     createUserDtoNew.user_name = createUserDto.user_name;
     createUserDtoNew.user_email = createUserDto.user_email;
     createUserDtoNew.password = createUserDto.password;
+    createUserDtoNew.user_phone = createUserDto.user_phone;
+    if (createUserDto.blind_discapacity_percentage != undefined) {
+      createUserDtoNew.blind_discapacity_percentage = +createUserDto.blind_discapacity_percentage;
+    }
+    return createUserDtoNew
+  }
+
+  private get_dto_up(createUserDto: UpdateUserDto): UpdateUserDto {
+    let createUserDtoNew = new UpdateUserDto();
+    createUserDtoNew.user_name = createUserDto.user_name;
+    createUserDtoNew.user_email = createUserDto.user_email;
     createUserDtoNew.user_phone = createUserDto.user_phone;
     if (createUserDto.blind_discapacity_percentage != undefined) {
       createUserDtoNew.blind_discapacity_percentage = +createUserDto.blind_discapacity_percentage;

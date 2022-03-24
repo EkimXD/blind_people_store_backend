@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserEntity } from './entities/user.entity';
-
+import {UpdateUserPassDto} from './dto/update-user-pass.dto'
 @Injectable()
 export class UserService {
 
@@ -55,7 +55,7 @@ export class UserService {
     );
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
+  update(id: number, updateUserDto: UpdateUserDto|UpdateUserPassDto) {
     return this._repositoryUser.update(id, updateUserDto);
   }
 
