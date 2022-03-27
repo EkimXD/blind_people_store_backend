@@ -3,6 +3,7 @@ import { ServiceCategoryEntity } from "src/service-category/entities/service-cat
 import { UserEntity } from "src/user/entities/user.entity";
 import { Column, Entity,JoinTable, OneToMany,ManyToOne, PrimaryGeneratedColumn, JoinColumn } from "typeorm";
 import { ScoreEntity } from "src/score/entities/score.entity";
+import { CommentEntity } from "src/comment/entities/comment.entity";
 
 @Entity("SERVICE")
 export class ServiceEntity {
@@ -65,6 +66,10 @@ export class ServiceEntity {
     @OneToMany(type => ScoreEntity, score => score.service) 
     @JoinTable()
     score: ScoreEntity[];
+
+    @OneToMany(type => CommentEntity, comment => comment.service, { nullable: true }) 
+    @JoinTable()
+    comment: CommentEntity[];
 
     public static getServiceFake(id:number):ServiceEntity{
         let service: ServiceEntity = new ServiceEntity();

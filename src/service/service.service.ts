@@ -50,7 +50,9 @@ export class ServiceService {
   }
 
   findOne(id: number) {
-    return this._repositoryService.findOne(id, { relations: ['user', 'sc', 'city'] });
+    return this._repositoryService.findOne(id, { 
+      relations: ['user', 'sc', 'city', "comment", "comment.user", "comment.children", "comment.children.user"] 
+    });
   }
 
   update(id: number, updateUserDto: UpdateServiceDto) {

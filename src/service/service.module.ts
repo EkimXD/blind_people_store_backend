@@ -5,13 +5,15 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from 'src/user/entities/user.entity';
 import { ServiceEntity } from './entities/service.entity';
 import { ScoreEntity } from 'src/score/entities/score.entity';
+import { CommentEntity } from 'src/comment/entities/comment.entity';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([
       UserEntity,
       ServiceEntity,
-      ScoreEntity
+      ScoreEntity,
+      CommentEntity
     ],
     "default")
   ],

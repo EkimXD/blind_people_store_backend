@@ -1,6 +1,7 @@
 import { RoleEntity } from "src/role/entities/role.entity";
 import { ServiceEntity } from "src/service/entities/service.entity";
 import { ScoreEntity } from "src/score/entities/score.entity";
+import { CommentEntity } from "src/comment/entities/comment.entity";
 import { Column, Entity, JoinTable, ManyToOne, ManyToMany,OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity("USER")
@@ -65,6 +66,10 @@ export class UserEntity {
     @OneToMany(type => ScoreEntity, score => score.user) 
     @JoinTable()
     score: ScoreEntity[];
+
+    @OneToMany(type => CommentEntity, comment => comment.user) 
+    @JoinTable()
+    comment: CommentEntity[];
 
     public static getUserFake(id:number):UserEntity{
         let user: UserEntity = new UserEntity();
