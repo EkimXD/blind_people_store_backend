@@ -41,7 +41,7 @@ export class UserService {
   }
 
   findOne(id: number) {
-    return this._repositoryUser.findOne(id, {relations:['role']});
+    return this._repositoryUser.findOne(id, {relations:['role', 'score']});
   }
 
   findByEmail(user_email: string) {

@@ -81,9 +81,7 @@ export class ServiceController {
           .catch(
             err => {
               reject(
-                {
-                  error: err
-                }
+                err
               )
             }
           );

@@ -70,6 +70,7 @@ export class ServiceService {
     props["service_description"] ? where["service_description"]= ILike(`%${props["service_description"]}%`) : null;
     props["category_name"] ? where["sc"]= {"sc_name":props["category_name"]} : null;
     props["city_name"] ? where["city"]= {"city":props["city_name"]} : null;
+    props["user_id"] ? where["user"]= {"user_id":props["user_id"]} : null;
     return where;
   }
 }

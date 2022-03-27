@@ -1,7 +1,8 @@
 import { CityEntity } from "src/city/entities/city.entity";
 import { ServiceCategoryEntity } from "src/service-category/entities/service-category.entity";
 import { UserEntity } from "src/user/entities/user.entity";
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity,JoinTable, OneToMany,ManyToOne, PrimaryGeneratedColumn, JoinColumn } from "typeorm";
+import { ScoreEntity } from "src/score/entities/score.entity";
 
 @Entity("SERVICE")
 export class ServiceEntity {
@@ -61,4 +62,13 @@ export class ServiceEntity {
         { nullable: true }) // TODO change to false
     sc: ServiceCategoryEntity;
 
+    @OneToMany(type => ScoreEntity, score => score.service) 
+    @JoinTable()
+    score: ScoreEntity[];
+
+    public static getServiceFake(id:number):ServiceEntity{
+        let service: ServiceEntity = new ServiceEntity();
+        service.service_id=id
+        return service;
+    }
 }

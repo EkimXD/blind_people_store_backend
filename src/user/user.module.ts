@@ -8,6 +8,7 @@ import { JwtService } from '@nestjs/jwt';
 import { JwtModule } from '@nestjs/jwt';
 import { RoleEntity } from 'src/role/entities/role.entity';
 import { ServiceEntity } from 'src/service/entities/service.entity';
+import { ScoreEntity } from 'src/score/entities/score.entity';
 import { RoleModule } from 'src/role/role.module';
 
 @Module({
@@ -17,7 +18,8 @@ import { RoleModule } from 'src/role/role.module';
       [
         UserEntity,
         RoleEntity,
-        ServiceEntity
+        ServiceEntity,
+        ScoreEntity
       ],
       'default',
     ),

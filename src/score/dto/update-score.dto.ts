@@ -1,4 +1,34 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateScoreDto } from './create-score.dto';
+import { ApiProperty } from '@nestjs/swagger';
+import { IsEmail, IsNotEmpty, IsString, Matches } from "class-validator";
 
-export class UpdateScoreDto extends PartialType(CreateScoreDto) {}
+export class UpdateScoreDto {
+    
+    @ApiProperty(
+        {
+            description: 'Grade',
+            default: 3,
+        }
+    )
+    @IsNotEmpty()
+    score_number: number;
+
+    @ApiProperty(
+        {
+            description: 'User account password',
+            default: 1,
+        }
+    )
+    @IsNotEmpty()
+    user?: any;
+
+    @ApiProperty(
+        {
+            description: "User's phone number",
+            default: 1,
+        }
+    )
+    @IsNotEmpty()
+    service?: any;
+
+}
+
