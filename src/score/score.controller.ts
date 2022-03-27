@@ -81,6 +81,18 @@ export class ScoreController {
     return this.scoreService.remove(+id);
   }
 
+  @Get('user-score/:id')
+  @ApiResponse({ status: 200, description: 'Succesfull.' })
+  findScoreForUser(@Param('id') id: string) {
+    return this.scoreService.findScoreForUser(+id);
+  }
+
+  @Get('service-score/:id')
+  @ApiResponse({ status: 200, description: 'Succesfull.' })
+  findScoreForService(@Param('id') id: string) {
+    return this.scoreService.findScoreForService(+id);
+  }
+
   private get_dto(createScoreDto: CreateScoreDto|UpdateScoreDto): CreateScoreDto {
     let createScoreDtoNew = new CreateScoreDto();
     createScoreDtoNew.score_number= createScoreDto.score_number;

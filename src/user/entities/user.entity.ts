@@ -59,7 +59,7 @@ export class UserEntity {
     @ManyToOne(type => RoleEntity, role => role.role_id) 
     role: RoleEntity;
 
-    @OneToMany(type => ServiceEntity, service => service.service_id) 
+    @OneToMany(type => ServiceEntity, service => service.user) 
     @JoinTable()
     service: ServiceEntity[];
 

@@ -61,6 +61,7 @@ export class ServiceController {
   @ApiQuery({ name: 'score_min', required: false, })
   @ApiQuery({ name: 'price_min', required: false, })
   @ApiQuery({ name: 'price_max', required: false, })
+  @ApiQuery({ name: 'user_id', required: false, })
   findAll(
     @Req() request: object,
     // @Res() response: Response
