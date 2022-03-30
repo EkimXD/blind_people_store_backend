@@ -1,6 +1,6 @@
 import { ServiceEntity } from "src/service/entities/service.entity";
 import { UserEntity } from "src/user/entities/user.entity";
-import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn, TreeChildren, TreeParent } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn, TreeChildren, TreeParent } from "typeorm";
 
 @Entity("COMMENT")
 export class CommentEntity {
@@ -20,6 +20,10 @@ export class CommentEntity {
         comment: "comment"
     })
     comment: string;
+
+
+    @CreateDateColumn()
+    createdDate: Date
 
     @ManyToOne(type => ServiceEntity, service => service.comment)
     service: ServiceEntity;

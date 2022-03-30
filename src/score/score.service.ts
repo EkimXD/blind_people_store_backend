@@ -64,7 +64,6 @@ export class ScoreService {
           )
           .then(
             result => {
-              console.log(result);
               if (result !== []) {
                 let counter = 0;
                 const sumScore = result[0].service
