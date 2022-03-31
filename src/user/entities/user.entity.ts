@@ -3,6 +3,7 @@ import { ServiceEntity } from "src/service/entities/service.entity";
 import { ScoreEntity } from "src/score/entities/score.entity";
 import { CommentEntity } from "src/comment/entities/comment.entity";
 import { Column, Entity, JoinTable, ManyToOne, ManyToMany,OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { DemandServiceEntity } from "src/demand-service/entities/demand-service.entity";
 
 @Entity("USER")
 export class UserEntity {
@@ -71,6 +72,11 @@ export class UserEntity {
     @JoinTable()
     comment: CommentEntity[];
 
+    @OneToMany(type => DemandServiceEntity,
+        demandservice => demandservice.user,
+        { nullable: true }) // TODO change to false
+    demandservice: DemandServiceEntity[];
+    
     public static getUserFake(id:number):UserEntity{
         let user: UserEntity = new UserEntity();
         user.user_id=id

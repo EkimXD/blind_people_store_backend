@@ -6,6 +6,10 @@ import { AuthGuard } from '@nestjs/passport';
 import { ApiHeader, ApiResponse, ApiTags, ApiQuery } from '@nestjs/swagger';
 import { validate } from 'class-validator';
 import { Response } from 'express';
+import { AddDemandedServiceDto } from './dto/add-demand-service.dto';
+import { DemandServiceEntity } from "src/demand-service/entities/demand-service.entity";
+import { DemandServiceService } from 'src/demand-service/demand-service.service';
+
 
 @ApiTags('service')
 @ApiHeader({
@@ -28,7 +32,8 @@ import { Response } from 'express';
 @UseGuards(AuthGuard('api-key'))
 @Controller('service')
 export class ServiceController {
-  constructor(private readonly serviceService: ServiceService) { }
+  constructor(private readonly serviceService: ServiceService,
+    private readonly demandServiceService: DemandServiceService) { }
 
   @Post()
   @ApiResponse({ status: 201, description: 'The record has been successfully created.' })
@@ -110,6 +115,36 @@ export class ServiceController {
       })
       throw new BadRequestException(error);
     }
+  }
+
+  @ApiResponse({ status: 200, description: 'Succesfull updated.' })
+  @ApiQuery({ name: 'demand-service-id', required: true, })
+  @Patch('addServiceDemand/:id')
+  async addServiceDemand(@Param('id') id: string, @Query('demand-service-id') dservice: string) {
+    return new Promise((resolve, reject) => {
+      this.serviceService.findOne(+id, ["demandservice"])
+        .then(
+          result => {
+            this.demandServiceService.findOne(+dservice, [])
+              .then(
+                dmand => {
+                  result.addDemandService(dmand);
+                  console.log(result, dservice);
+                  return this.serviceService.create(result)
+                }
+              )
+              .then(
+                result=> {
+                  resolve(result)
+                }
+              )
+              .catch(error => {reject(error)})
+          }
+        )
+        .catch(error => {reject(error)})
+
+    }
+    )
   }
 
   @ApiResponse({ status: 200, description: 'Succesfull deleted.' })

@@ -4,6 +4,7 @@ import { UpdateServiceDto } from './dto/update-service.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ServiceEntity } from './entities/service.entity';
 import { Repository, ILike, MoreThanOrEqual, LessThanOrEqual } from 'typeorm';
+import { AddDemandedServiceDto } from './dto/add-demand-service.dto';
 
 @Injectable()
 export class ServiceService {
@@ -49,13 +50,13 @@ export class ServiceService {
     });
   }
 
-  findOne(id: number) {
+  findOne(id: number, relations?:Array<any>) {
     return this._repositoryService.findOne(id, { 
-      relations: ['user', 'sc', 'city', "comment", "comment.user", "comment.children", "comment.children.user"] 
+      relations: relations?relations:['user', 'sc', 'city', "comment", "demandservice", "comment.user", "comment.children", "comment.children.user"] 
     });
   }
 
-  update(id: number, updateUserDto: UpdateServiceDto) {
+  update(id: number, updateUserDto: UpdateServiceDto|AddDemandedServiceDto) {
     return this._repositoryService.update(id, updateUserDto);
   }
 

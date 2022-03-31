@@ -10,6 +10,7 @@ import { RoleEntity } from 'src/role/entities/role.entity';
 import { ServiceEntity } from 'src/service/entities/service.entity';
 import { ScoreEntity } from 'src/score/entities/score.entity';
 import { RoleModule } from 'src/role/role.module';
+import { DemandServiceEntity } from "src/demand-service/entities/demand-service.entity";
 
 @Module({
   imports: [
@@ -19,7 +20,8 @@ import { RoleModule } from 'src/role/role.module';
         UserEntity,
         RoleEntity,
         ServiceEntity,
-        ScoreEntity
+        ScoreEntity,
+        DemandServiceEntity
       ],
       'default',
     ),
