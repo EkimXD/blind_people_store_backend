@@ -52,7 +52,7 @@ export class ServiceService {
 
   findOne(id: number, relations?:Array<any>) {
     return this._repositoryService.findOne(id, { 
-      relations: relations?relations:['user', 'sc', 'city', "comment", "demandservice", "comment.user", "comment.children", "comment.children.user"] 
+      relations: relations?relations:['user', 'sc', 'city', "comment", "demandservice", "demandservice.user", "comment.user", "comment.children", "comment.children.user"] 
     });
   }
 
