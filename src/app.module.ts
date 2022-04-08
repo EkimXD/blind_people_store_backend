@@ -27,7 +27,7 @@ import { AuthService } from './auth/auth.service';
       // username: process.env.DATABASE_USER,
       // password: process.env.DATABASE_PASSWORD,
       // database: process.env.DATABASE,
-      dropSchema: true,
+      dropSchema: false,
       autoLoadEntities: true,
       synchronize: true,
       logging: false,
