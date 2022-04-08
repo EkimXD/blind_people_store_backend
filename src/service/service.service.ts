@@ -50,9 +50,14 @@ export class ServiceService {
     });
   }
 
-  findOne(id: number, relations?:Array<any>) {
+  findOne(id: number, relations?:Array<any>, userScored?:number) {
+    const where=userScored?{"score":{"user_id":userScored}}:{};
+    let relationsA=relations?relations:['user', 'sc', 'city', "comment", "demandservice", "demandservice.user", "comment.user", "comment.children", "comment.children.user"];
+    userScored?relationsA.push("score"): null;
+    console.log(userScored, where, relationsA)
     return this._repositoryService.findOne(id, { 
-      relations: relations?relations:['user', 'sc', 'city', "comment", "demandservice", "demandservice.user", "comment.user", "comment.children", "comment.children.user"] 
+      relations: relationsA, 
+      where
     });
   }
 
@@ -74,6 +79,7 @@ export class ServiceService {
     props["category_name"] ? where["sc"]= {"sc_name":props["category_name"]} : null;
     props["city_name"] ? where["city"]= {"city":props["city_name"]} : null;
     props["user_id"] ? where["user"]= {"user_id":props["user_id"]} : null;
+    props["user-scored"] ? where["score"]= {"user_id":props["user-scored"]} : null;
     return where;
   }
 }

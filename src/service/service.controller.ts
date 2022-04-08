@@ -97,8 +97,8 @@ export class ServiceController {
 
   @ApiResponse({ status: 200, description: 'Succesfull updated.' })
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.serviceService.findOne(+id);
+  findOne(@Param('id') id: string, @Query("user-scored") userScored: string) {
+    return this.serviceService.findOne(+id, undefined, +userScored);
   }
 
   @ApiResponse({ status: 200, description: 'Succesfull updated.' })
