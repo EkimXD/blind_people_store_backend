@@ -1,7 +1,7 @@
 import { CityEntity } from "src/city/entities/city.entity";
 import { ServiceCategoryEntity } from "src/service-category/entities/service-category.entity";
 import { UserEntity } from "src/user/entities/user.entity";
-import { Column, Entity, JoinTable, OneToMany, ManyToOne, PrimaryGeneratedColumn, JoinColumn, ManyToMany } from "typeorm";
+import { Column, Entity, JoinTable, OneToMany, ManyToOne, PrimaryGeneratedColumn, JoinColumn, ManyToMany, CreateDateColumn } from "typeorm";
 import { ScoreEntity } from "src/score/entities/score.entity";
 import { CommentEntity } from "src/comment/entities/comment.entity";
 import { DemandServiceEntity } from "src/demand-service/entities/demand-service.entity";
@@ -73,6 +73,10 @@ export class ServiceEntity {
             onUpdate: 'CASCADE'
         }
     )
+
+    @CreateDateColumn()
+    createdDate: Date;
+    
     @JoinTable()
     demandservice: DemandServiceEntity[];
 
