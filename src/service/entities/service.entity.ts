@@ -72,13 +72,12 @@ export class ServiceEntity {
             onDelete: 'CASCADE',
             onUpdate: 'CASCADE'
         }
-    )
+    )    
+    @JoinTable()
+    demandservice: DemandServiceEntity[];
 
     @CreateDateColumn()
     createdDate: Date;
-    
-    @JoinTable()
-    demandservice: DemandServiceEntity[];
 
     @OneToMany(type => ScoreEntity, score => score.service)
     @JoinTable()

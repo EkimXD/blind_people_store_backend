@@ -24,7 +24,7 @@ export class UserService {
       })
       .catch((e) => {
         throw new BadRequestException(
-          'Account with this email already exists.',
+          e,
         );
       }
       );
