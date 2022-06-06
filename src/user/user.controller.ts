@@ -36,8 +36,9 @@ export class UserController {
   @Post()
   @ApiResponse({ status: 201, description: 'The record has been successfully created.' })
   async create(@Body() createUserDto: CreateUserDto) {
-    createUserDto = this.get_dto(createUserDto)
-    const validation = await validate(createUserDto);
+    // createUserDto = this.get_dto(createUserDto)
+    // const validation = await validate(createUserDto);
+    const validation=[]
     if (validation.length == 0) {
       return this.userService.create(createUserDto);
     } else {
