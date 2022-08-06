@@ -16,20 +16,55 @@ export class ScoreService {
   ) { }
 
   create(createScoreDto: CreateScoreDto) {
-    return this._repositoryScore.save(createScoreDto)
-      .then((ok) => {
-        return {
-          statusCode: 201,
-          message: "The record has been successfully created.",
-          record_id: ok.score_id
-        };
+    return new Promise((resolve, reject) => {
+      this._repositoryScore.findOne({
+        where: {
+          user: createScoreDto.user,
+          service: createScoreDto.service
+        }
       })
-      .catch((e) => {
-        throw new BadRequestException(
-          'Account with this email already exists.',
-        );
-      }
-      );
+        .then(
+          result => {
+            if (result == undefined || result == null) {
+              this._repositoryScore.save(createScoreDto)
+                .then((ok) => {
+                  resolve(
+                    {
+                      statusCode: 201,
+                      message: "The record has been successfully created.",
+                      record_id: ok.score_id
+                    }
+                  );
+                })
+                .catch((e) => {
+                  throw new BadRequestException(
+                    'There was an error, please try later with diferent data.',
+                  );
+                }
+                );
+            }
+            else {
+              this._repositoryScore.update(result.score_id, createScoreDto)
+                .then((ok) => {
+                  resolve({
+                    statusCode: 201,
+                    message: "The record has been successfully updated.",
+                    record_id: result.score_id
+                  }
+                  );
+                })
+                .catch((e) => {
+                  throw new BadRequestException(
+                    'There was an error, please try later with diferent data.',
+                  );
+                }
+                );
+            }
+            console.log("Java", result)
+          }
+        )
+    }
+    );
   }
 
   findAll(where: any = {}, relations: any = ['user', 'service'], skip: number = 0, take: number = 10, order: any = { score_id: 'DESC' }) {
@@ -70,12 +105,12 @@ export class ScoreService {
                   .reduce((a, b) => {
                     return a + b.score.reduce(
                       (a, b) => {
-                        counter+=1;
+                        counter += 1;
                         return a + b.score_number
                       }
                       , 0)
                   }, 0)
-                resolve(sumScore/counter);
+                resolve(sumScore / counter);
               } else {
                 resolve("--");
               }

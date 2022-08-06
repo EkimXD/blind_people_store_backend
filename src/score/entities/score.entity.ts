@@ -1,9 +1,10 @@
 import { RoleEntity } from "src/role/entities/role.entity";
 import { ServiceEntity } from "src/service/entities/service.entity";
 import { UserEntity } from "src/user/entities/user.entity";
-import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, Index, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryColumn, PrimaryGeneratedColumn, Unique } from "typeorm";
 
 @Entity("SCORE")
+@Unique(['user', 'service'])
 export class ScoreEntity {
 
     @PrimaryGeneratedColumn({
@@ -32,7 +33,7 @@ export class ScoreEntity {
 
     public static getScoreFake(id:number):ScoreEntity{
         let score: ScoreEntity = new ScoreEntity();
-        score.score_id=id
+        score.score_id=id;
         return score;
     }
 
