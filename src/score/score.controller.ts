@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, BadRequestException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, BadRequestException, Query } from '@nestjs/common';
 import { ScoreService } from './score.service';
 import { CreateScoreDto } from './dto/create-score.dto';
 import { UpdateScoreDto } from './dto/update-score.dto';
@@ -7,6 +7,7 @@ import { ApiHeader, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { validate } from 'class-validator';
 import { UserEntity } from 'src/user/entities/user.entity';
 import { ServiceEntity } from 'src/service/entities/service.entity';
+import { serialize } from 'v8';
 @ApiTags('score')
 @ApiHeader({
   name: 'Content-Type',
@@ -47,9 +48,16 @@ export class ScoreController {
     }
   }
 
+  @Get('user-scored')
+  @ApiResponse({ status: 200, description: 'Succesfull.' })
+  findScoreByUserService(@Query('serviceId') serviceId:string, @Query('userId') userId:string) {
+    return this.scoreService.findScore(+serviceId, +userId);
+  }
+
   @Get()
   @ApiResponse({ status: 200, description: 'Succesfull.' })
   findAll() {
+    console.log("here")
     return this.scoreService.findAll();
   }
 
@@ -58,6 +66,8 @@ export class ScoreController {
   findOne(@Param('id') id: string) {
     return this.scoreService.findOne(+id);
   }
+
+  
 
   @Patch(':id')
   @ApiResponse({ status: 200, description: 'Succesfull.' })

@@ -67,6 +67,15 @@ export class ScoreService {
     );
   }
 
+  findScore(serviceId:number, userId:number) {
+    return this._repositoryScore.findOne({
+      where: {
+        user: userId,
+        service: serviceId
+      }
+    });
+  }
+
   findAll(where: any = {}, relations: any = ['user', 'service'], skip: number = 0, take: number = 10, order: any = { score_id: 'DESC' }) {
     return this._repositoryScore.find({
       where: where,
